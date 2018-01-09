@@ -1,10 +1,12 @@
-package com.example.lyl.wandroid;
+package com.example.lyl.wandroid.view.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.lyl.wandroid.R;
+
 public class LoginActivity extends AppCompatActivity {
-    //进入开发分支
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

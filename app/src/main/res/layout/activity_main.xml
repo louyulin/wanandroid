@@ -4,15 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.lyl.wandroid.LoginActivity">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitXY"
+        android:src="@drawable/peopleicon"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+    <EditText
+        android:id="@+id/user_et"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:theme="@style/MyEditText"
+        android:hint="填写账户名"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/psw_et"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:theme="@style/MyEditText"
+        android:hint="填写密码"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:id="@+id/goto_regeist_tv"
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorPrimary"
+            android:text="没有账号,请注册➡️"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
