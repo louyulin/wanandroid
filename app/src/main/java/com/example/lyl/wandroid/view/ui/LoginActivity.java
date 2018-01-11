@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (!id.equals("id为空")){
             startActivity(new Intent(LoginActivity.this,MainActivity.class));
+            finish();
         }
 
         initView();
@@ -138,7 +139,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             presenter.putSheare(bean);
 
             startActivity(new Intent(LoginActivity.this , MainActivity.class));
-            this.finish();
+            finish();
         }
     }
 

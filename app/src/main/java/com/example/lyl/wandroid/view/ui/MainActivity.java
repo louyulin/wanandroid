@@ -9,19 +9,28 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lyl.wandroid.R;
 import com.example.lyl.wandroid.adapter.MainVpAdapter;
+import com.example.lyl.wandroid.modle.NetTool;
+import com.example.lyl.wandroid.modle.bean.HomeArticalBean;
+import com.example.lyl.wandroid.modle.bean.LoginResultBean;
 import com.example.lyl.wandroid.view.ui.fragment.HomeFragment;
 import com.example.lyl.wandroid.view.ui.fragment.KnowladgeFragment;
 import com.example.lyl.wandroid.view.ui.fragment.MyFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by dllo on 18/1/9.
@@ -79,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
 
         main_vp.setCurrentItem(1);
         main_vp.setCurrentItem(0);
-
 
     }
 

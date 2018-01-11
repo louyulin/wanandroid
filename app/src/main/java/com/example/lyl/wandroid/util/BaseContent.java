@@ -5,6 +5,5 @@ package com.example.lyl.wandroid.util;
  */
 
 public class BaseContent {
-    public static String baseUrl = "http://www.wanandroid.com/article/list/";
-    public static String registerUrl = "http://www.wanandroid.com/user/";
+    public static String baseUrl = "http://www.wanandroid.com/";
 }

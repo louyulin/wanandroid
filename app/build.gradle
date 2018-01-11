@@ -42,5 +42,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     compile 'com.android.support:support-v4:26.+'
+    compile 'com.hejunlin.superindicatorlibray:superindicatorlibray:1.0.3'
     testCompile 'junit:junit:4.12'
 }

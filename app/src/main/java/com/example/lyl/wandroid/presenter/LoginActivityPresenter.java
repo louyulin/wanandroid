@@ -33,7 +33,7 @@ public class LoginActivityPresenter {
     }
 
     public void login(){
-        NetTool.getInstance(BaseContent.registerUrl).getApi()
+        NetTool.getInstance().getApi()
                 .login(map). subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<LoginResultBean>() {

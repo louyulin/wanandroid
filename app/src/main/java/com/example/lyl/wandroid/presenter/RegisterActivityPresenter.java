@@ -33,7 +33,7 @@ public class RegisterActivityPresenter {
     }
 
     public void register() {
-        NetTool.getInstance(BaseContent.registerUrl).getApi()
+        NetTool.getInstance().getApi()
                 .register(map).
                 subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
