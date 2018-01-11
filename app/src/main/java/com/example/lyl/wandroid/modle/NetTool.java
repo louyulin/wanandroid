@@ -1,5 +1,8 @@
 package com.example.lyl.wandroid.modle;
 
+import android.content.Context;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -13,7 +16,6 @@ public class NetTool {
     private Retrofit retrofit;
     private final Api api;
 
-    private  String baseurl;
 
     public Api getApi() {
         return api;
@@ -21,8 +23,13 @@ public class NetTool {
 
 
     private NetTool(String baseurl) {
+
+
+
         //初始化Retrofit
-        retrofit = new Retrofit.Builder().baseUrl(baseurl)
+        retrofit = new Retrofit.Builder()
+                .baseUrl(baseurl)
+                .client(OkHttpClientManger.getOkHttpClient())
                 //给Retrofit添加Gson解析功能
                 .addConverterFactory(GsonConverterFactory.create())
                 //给Retrofit添加Rxjava功能
@@ -33,7 +40,7 @@ public class NetTool {
     }
 
     //线程锁单例
-    public static NetTool getInstance(String baseurl) {
+    public static NetTool getInstance(String baseurl ) {
         if (instance == null) {
             synchronized (NetTool.class) {
                 if (instance == null) {
