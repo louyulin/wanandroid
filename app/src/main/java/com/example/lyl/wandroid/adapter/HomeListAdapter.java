@@ -1,5 +1,6 @@
 package com.example.lyl.wandroid.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.TextView;
 
 import com.example.lyl.wandroid.R;
 import com.example.lyl.wandroid.modle.bean.HomeArticalBean;
+import com.example.lyl.wandroid.util.BaseContent;
+import com.example.lyl.wandroid.view.ui.ArticalDetialActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +48,7 @@ public class HomeListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         Holder holder;
         if (convertView == null){
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_homelv,parent,false);
@@ -56,6 +59,17 @@ public class HomeListAdapter extends BaseAdapter {
         }
         holder.titletv.setText(list.get(position).getTitle());
         holder.zuozhetv.setText(list.get(position).getNiceDate()+"  " +"来自" +"  " + list.get(position).getAuthor());
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(parent.getContext(), ArticalDetialActivity.class);
+                intent.putExtra(BaseContent.ARTICALTITLE,list.get(position).getTitle());
+                intent.putExtra(BaseContent.ARTICALLINK,list.get(position).getLink());
+                intent.putExtra(BaseContent.ISCOLLECT,list.get(position).isCollect());
+                intent.putExtra(BaseContent.ARTICALID,list.get(position).getId());
+                parent.getContext().startActivity(intent);
+            }
+        });
         return convertView;
     }
 

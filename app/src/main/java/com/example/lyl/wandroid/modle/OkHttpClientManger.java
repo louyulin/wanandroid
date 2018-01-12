@@ -1,8 +1,5 @@
 package com.example.lyl.wandroid.modle;
 
-import com.example.lyl.wandroid.BuildConfig;
-import com.example.lyl.wandroid.util.WanAndroidCookieJar;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 

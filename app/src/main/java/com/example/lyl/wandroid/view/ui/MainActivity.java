@@ -21,9 +21,13 @@ import com.example.lyl.wandroid.adapter.MainVpAdapter;
 import com.example.lyl.wandroid.modle.NetTool;
 import com.example.lyl.wandroid.modle.bean.HomeArticalBean;
 import com.example.lyl.wandroid.modle.bean.LoginResultBean;
+import com.example.lyl.wandroid.util.BaseContent;
+import com.example.lyl.wandroid.util.Event;
 import com.example.lyl.wandroid.view.ui.fragment.HomeFragment;
 import com.example.lyl.wandroid.view.ui.fragment.KnowladgeFragment;
 import com.example.lyl.wandroid.view.ui.fragment.MyFragment;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,4 +103,6 @@ public class MainActivity extends AppCompatActivity {
         tab_tv.setText(titles.get(i));
         return tabView;
     }
+
+
 }

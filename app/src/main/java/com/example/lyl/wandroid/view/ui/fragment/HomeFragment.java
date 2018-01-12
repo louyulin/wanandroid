@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,10 +18,15 @@ import com.example.lyl.wandroid.adapter.HomeListAdapter;
 import com.example.lyl.wandroid.adapter.HomePicAdapter;
 import com.example.lyl.wandroid.modle.bean.HomeArticalBean;
 import com.example.lyl.wandroid.presenter.HomeFragmentPresenter;
+import com.example.lyl.wandroid.util.BaseContent;
+import com.example.lyl.wandroid.util.Event;
 import com.example.lyl.wandroid.view.customview.RefreshLayout;
 import com.example.lyl.wandroid.view.iview.IHomeFragment;
 import com.hejunlin.superindicatorlibray.CircleIndicator;
 import com.hejunlin.superindicatorlibray.LoopViewPager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +56,7 @@ public class HomeFragment extends Fragment implements IHomeFragment, SwipeRefres
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        EventBus.getDefault().register(this);
         presenter = new HomeFragmentPresenter(this);
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
@@ -88,6 +94,8 @@ public class HomeFragment extends Fragment implements IHomeFragment, SwipeRefres
 
         progressDialog.show();
         presenter.requestHomeList(page);
+
+
     }
 
 
@@ -139,5 +147,20 @@ public class HomeFragment extends Fragment implements IHomeFragment, SwipeRefres
        ++page;
         presenter.requestHomeList(page);
 
+    }
+
+    @Subscribe
+    public void onEventMainThread(Event event) {
+        if (event.getMsg().equals(BaseContent.REFRESHHOMEFRAGMENT)){
+            isRefreshing = true;
+            datas.clear();
+            presenter.requestHomeList(0);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

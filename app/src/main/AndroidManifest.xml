@@ -20,7 +20,8 @@
         </activity>
         <activity android:name=".view.ui.RegisterActivity" />
         <activity android:name=".view.ui.MainActivity" />
-        <activity android:name=".view.ui.SearchActivity"></activity>
+        <activity android:name=".view.ui.SearchActivity" />
+        <activity android:name=".view.ui.ArticalDetialActivity"></activity>
     </application>
 
 </manifest>
