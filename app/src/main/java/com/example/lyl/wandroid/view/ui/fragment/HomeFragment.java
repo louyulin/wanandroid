@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,21 +17,29 @@ import com.example.lyl.wandroid.adapter.HomeListAdapter;
 import com.example.lyl.wandroid.adapter.HomePicAdapter;
 import com.example.lyl.wandroid.modle.bean.HomeArticalBean;
 import com.example.lyl.wandroid.presenter.HomeFragmentPresenter;
+import com.example.lyl.wandroid.view.customview.RefreshLayout;
 import com.example.lyl.wandroid.view.iview.IHomeFragment;
 import com.hejunlin.superindicatorlibray.CircleIndicator;
 import com.hejunlin.superindicatorlibray.LoopViewPager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements IHomeFragment {
+public class HomeFragment extends Fragment implements IHomeFragment, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
 
 
     private HomeFragmentPresenter presenter;
     private HomeListAdapter adapter;
-
     private ProgressDialog progressDialog;
     private ListView listView;
+    private RefreshLayout refreshLayout;
+    private int page = 0;
+    private List<HomeArticalBean.DataBean.DatasBean> datas;
+    private boolean isRefreshing = false;
+    private boolean isLoading = false;
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -67,18 +76,37 @@ public class HomeFragment extends Fragment implements IHomeFragment {
         listView.addHeaderView(lvHeadView);
 
         adapter = new HomeListAdapter();
+        listView.setAdapter(adapter);
+
+        refreshLayout = view.findViewById(R.id.swipRefreshLayout);
+        refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent, R.color.colorAccent, R.color.colorPrimaryDark);
+
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setOnLoadListener(this);
+
+        datas = new ArrayList<>();
 
         progressDialog.show();
-        presenter.requestHomeList();
+        presenter.requestHomeList(page);
     }
 
 
     @Override
     public void response(HomeArticalBean bean) {
+        if (isRefreshing){
+            refreshLayout.setRefreshing(false);
+            isRefreshing = false;
+        }
+        if (isLoading){
+            refreshLayout.setLoading(false);
+            isLoading = false;
+        }
         progressDialog.dismiss();
         if (bean.getData().getDatas() != null) {
-            adapter.setList(bean.getData().getDatas());
-            listView.setAdapter(adapter);
+            for (int i = 0; i <bean.getData().getDatas().size() ; i++) {
+                datas.add(bean.getData().getDatas().get(i));
+            }
+            adapter.setList(datas);
         } else {
             Toast.makeText(getActivity(), "" + bean.getErrorMsg(), Toast.LENGTH_SHORT).show();
         }
@@ -86,7 +114,30 @@ public class HomeFragment extends Fragment implements IHomeFragment {
 
     @Override
     public void fail() {
+        if (isRefreshing){
+            refreshLayout.setRefreshing(false);
+            isRefreshing = false;
+        }
+        if (isLoading){
+            refreshLayout.setLoading(false);
+            isLoading = false;
+        }
         progressDialog.dismiss();
         Toast.makeText(getActivity(), "网络异常", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRefresh() {
+        isRefreshing = true;
+        datas.clear();
+        presenter.requestHomeList(0);
+    }
+
+    @Override
+    public void onLoad() {
+        isLoading = true;
+       ++page;
+        presenter.requestHomeList(page);
+
     }
 }

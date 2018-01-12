@@ -27,7 +27,7 @@ public class HomeListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (list == null){
+        if (list.size()==0){
             return 0;
         }else {
             return list.size();

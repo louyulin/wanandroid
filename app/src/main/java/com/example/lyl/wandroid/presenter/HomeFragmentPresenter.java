@@ -23,9 +23,9 @@ public class HomeFragmentPresenter {
         this.view = view;
     }
 
-    public void requestHomeList () {
+    public void requestHomeList (int page) {
         NetTool.getInstance().getApi()
-                .getHomeList(0 + "")
+                .getHomeList(page + "")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<HomeArticalBean>() {
