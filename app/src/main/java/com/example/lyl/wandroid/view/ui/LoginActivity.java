@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lyl.wandroid.R;
+import com.example.lyl.wandroid.modle.NetTool;
 import com.example.lyl.wandroid.modle.bean.LoginResultBean;
 import com.example.lyl.wandroid.presenter.LoginActivityPresenter;
 import com.example.lyl.wandroid.util.ShareUtils;
@@ -20,6 +21,10 @@ import com.example.lyl.wandroid.view.iview.ILoginActivity;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener , ILoginActivity {
 
@@ -34,13 +39,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        String id = ShareUtils.getString(LoginActivity.this, "id", "id为空");
-
-        if (!id.equals("id为空")){
-            startActivity(new Intent(LoginActivity.this,MainActivity.class));
-            finish();
-        }
 
         initView();
 

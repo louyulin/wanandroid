@@ -92,6 +92,7 @@ public class HomeFragment extends Fragment implements IHomeFragment, SwipeRefres
 
         datas = new ArrayList<>();
 
+
         progressDialog.show();
         presenter.requestHomeList(page);
 

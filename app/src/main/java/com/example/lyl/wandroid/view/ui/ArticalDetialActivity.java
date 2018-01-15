@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +23,8 @@ import com.example.lyl.wandroid.R;
 import com.example.lyl.wandroid.presenter.ArticalDetialActivityPresenter;
 import com.example.lyl.wandroid.util.BaseContent;
 import com.example.lyl.wandroid.util.Event;
+import com.example.lyl.wandroid.util.SharesUtils;
 import com.example.lyl.wandroid.view.iview.IArticalDetialActivity;
-
 import org.greenrobot.eventbus.EventBus;
 
 public class ArticalDetialActivity extends AppCompatActivity implements IArticalDetialActivity {
@@ -36,6 +37,7 @@ public class ArticalDetialActivity extends AppCompatActivity implements IArtical
     private int articalId;
     private MenuItem collect;
     private ArticalDetialActivityPresenter presenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class ArticalDetialActivity extends AppCompatActivity implements IArtical
         link = intent.getStringExtra(BaseContent.ARTICALLINK);
         iscollect = intent.getBooleanExtra(BaseContent.ISCOLLECT, false);
         articalId = intent.getIntExtra(BaseContent.ARTICALID, -1);
+
     }
 
     private void initView() {
@@ -122,7 +125,7 @@ public class ArticalDetialActivity extends AppCompatActivity implements IArtical
                 }
                 break;
             case R.id.share:
-                Toast.makeText(this, "分享功能正在开发中", Toast.LENGTH_SHORT).show();
+                SharesUtils.share(this, webview.getUrl());
                 break;
         }
         return true;

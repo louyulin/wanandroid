@@ -20,13 +20,14 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     //retrofit
+
     //Gson converter
+
     //RxJava2 Adapter
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -43,6 +44,7 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     compile 'com.android.support:support-v4:26.+'
     compile 'com.hejunlin.superindicatorlibray:superindicatorlibray:1.0.3'
-    testCompile 'junit:junit:4.12'
     compile 'org.greenrobot:eventbus:3.1.1'
+    compile 'com.hyman:flowlayout-lib:1.1.2'
+    testCompile 'junit:junit:4.12'
 }

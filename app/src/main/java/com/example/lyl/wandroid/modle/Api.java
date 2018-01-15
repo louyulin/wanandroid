@@ -1,7 +1,9 @@
 package com.example.lyl.wandroid.modle;
 
+import com.example.lyl.wandroid.modle.bean.AtricalListBean;
 import com.example.lyl.wandroid.modle.bean.CollectResultBean;
 import com.example.lyl.wandroid.modle.bean.HomeArticalBean;
+import com.example.lyl.wandroid.modle.bean.HotKeyBean;
 import com.example.lyl.wandroid.modle.bean.KnowladgeTxBean;
 import com.example.lyl.wandroid.modle.bean.LoginResultBean;
 import com.example.lyl.wandroid.modle.bean.RegistResultBean;
@@ -16,6 +18,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 
 /**
@@ -44,5 +47,17 @@ public interface  Api {
     @POST("lg/uncollect_originId/{id}/json")
     Observable<CollectResultBean> unCollectArtical(@Path("id") int id);
 
+    @GET("article/list/0/json")
+    Observable<AtricalListBean> getAtricalList(@Query("cid")  int id);
+
+    @POST("article/query/0/json")
+    Observable<AtricalListBean> search(@Query("k") String k);
+
+    //收藏列表
+    @GET("lg/collect/list/{page}/json")
+    Observable<AtricalListBean> getCollectData(@Path("page") int page);
+
+    @GET("hotkey/json")
+    Observable<HotKeyBean> getHotKey();
 
 }

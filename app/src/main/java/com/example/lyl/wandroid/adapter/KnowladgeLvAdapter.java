@@ -1,5 +1,7 @@
 package com.example.lyl.wandroid.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,9 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lyl.wandroid.R;
 import com.example.lyl.wandroid.modle.bean.KnowladgeTxBean;
+import com.example.lyl.wandroid.util.BaseContent;
+import com.example.lyl.wandroid.view.ui.ArticalListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +91,8 @@ public class KnowladgeLvAdapter extends BaseAdapter {
 
     class RvAdapter extends RecyclerView.Adapter<RvAdapter.Holder> {
 
+        private Context context;
+
         private List<KnowladgeTxBean.DataBean.ChildrenBean> secondDatas = new ArrayList<>();
 
         public void setSecondDatas(List<KnowladgeTxBean.DataBean.ChildrenBean> secondDatas) {
@@ -94,15 +101,27 @@ public class KnowladgeLvAdapter extends BaseAdapter {
         }
 
         @Override
-        public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public Holder onCreateViewHolder(final ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_konwladgelv_rv, parent, false);
             Holder holder = new Holder(view);
+            RvAdapter.this.context = parent.getContext();
             return holder;
         }
 
         @Override
-        public void onBindViewHolder(Holder holder, int position) {
+        public void onBindViewHolder(Holder holder, final int position) {
             holder.tv.setText(secondDatas.get(position).getName());
+
+            holder.tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setClass(context, ArticalListActivity.class);
+                    intent.putExtra(BaseContent.ARTICALID,secondDatas.get(position).getId());
+                    intent.putExtra(BaseContent.ARTICALTITLE,secondDatas.get(position).getName());
+                    context.startActivity(intent);
+                }
+            });
         }
 
         @Override

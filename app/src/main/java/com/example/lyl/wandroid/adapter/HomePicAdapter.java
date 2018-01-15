@@ -8,9 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.lyl.wandroid.R;
+import com.example.lyl.wandroid.util.BaseContent;
+import com.example.lyl.wandroid.view.ui.ArticalDetialActivity;
+import com.example.lyl.wandroid.view.ui.ArticalListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,7 @@ public class HomePicAdapter extends PagerAdapter {
 
     private List<String> piclist = new ArrayList<>();
     private List<String> titlelist = new ArrayList<>();
+    private List<String> navlist = new ArrayList<>();
 
     public HomePicAdapter(Context context) {
 
@@ -40,17 +45,40 @@ public class HomePicAdapter extends PagerAdapter {
         titlelist.add("兄弟,要挑个项目学习下?");
         titlelist.add("看看别人的面试经,搞定面试");
 
+        navlist.add("http://www.wanandroid.com/navi");
+        navlist.add("http://www.wanandroid.com/blog/show/10");
+
+
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, final int position) {
+    public Object instantiateItem(final ViewGroup container, final int position) {
         View view = LayoutInflater.from(context).inflate(R.layout.home_pic_item, null);
         TextView textView = (TextView) view.findViewById(R.id.tv_dec);
         ImageView imageView = (ImageView) view.findViewById(R.id.iv_img);
         textView.setText(titlelist.get(position));
         Glide.with(context).load(piclist.get(position)).into(imageView);
         container.addView(view);
-
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (position < 2) {
+                    Intent intent = new Intent(container.getContext(), ArticalDetialActivity.class);
+                    intent.putExtra(BaseContent.ARTICALLINK, navlist.get(position));
+                    container.getContext().startActivity(intent);
+                }else if (position == 2){
+                    Intent intent = new Intent(container.getContext(), ArticalListActivity.class);
+                    intent.putExtra(BaseContent.ARTICALID, 254);
+                    intent.putExtra(BaseContent.ARTICALTITLE,"新闻资讯");
+                    container.getContext().startActivity(intent);
+                }else if (position == 3) {
+                    Intent intent = new Intent(container.getContext(), ArticalListActivity.class);
+                    intent.putExtra(BaseContent.ARTICALID, 73);
+                    intent.putExtra(BaseContent.ARTICALTITLE,"面试相关");
+                    container.getContext().startActivity(intent);
+                }
+            }
+        });
         return view;
 
     }

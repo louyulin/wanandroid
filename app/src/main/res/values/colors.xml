@@ -5,4 +5,9 @@
     <color name="colorAccent">#3a7edb</color>
     <color name="pink">#f88</color>
     <color name="hei">#504f4f</color>
+    <color name="red">#b42828</color>
+    <color name="white">#fff</color>
+    <color name="black_gray">#aaabac</color>
+    <color name="gray">#FFd4d5d6</color>
+    <color name="light_gray">#eaebec</color>
 </resources>

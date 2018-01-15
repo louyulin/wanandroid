@@ -1,7 +1,6 @@
 package com.example.lyl.wandroid.view.ui;
 
-import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -9,32 +8,21 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.lyl.wandroid.R;
 import com.example.lyl.wandroid.adapter.MainVpAdapter;
-import com.example.lyl.wandroid.modle.NetTool;
-import com.example.lyl.wandroid.modle.bean.HomeArticalBean;
-import com.example.lyl.wandroid.modle.bean.LoginResultBean;
-import com.example.lyl.wandroid.util.BaseContent;
-import com.example.lyl.wandroid.util.Event;
 import com.example.lyl.wandroid.view.ui.fragment.HomeFragment;
 import com.example.lyl.wandroid.view.ui.fragment.KnowladgeFragment;
 import com.example.lyl.wandroid.view.ui.fragment.MyFragment;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by dllo on 18/1/9.
@@ -92,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         main_vp.setCurrentItem(1);
         main_vp.setCurrentItem(0);
+        main_vp.setOffscreenPageLimit(3);
 
     }
 
@@ -104,5 +93,20 @@ public class MainActivity extends AppCompatActivity {
         return tabView;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       getMenuInflater().inflate(R.menu.maintoolbar,menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.search:
+                Intent intent = new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return true;
+    }
 }
