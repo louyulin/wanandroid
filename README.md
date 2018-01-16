@@ -6,6 +6,7 @@
 其实项目本身难度并不大 关键是做出来之后感觉确实很实用,更方便了自己的学习,再次感谢羊神做了这么好的网站
 
 [同步博客地址:http://blog.csdn.net/louyulin/article/details/79074121](http://blog.csdn.net/louyulin/article/details/79074121)
+[鸿洋大神的api接口,大家可以自己来](http://www.wanandroid.com/blog/show/2)
 
 #### 具体功能
 * 用户登录注册本地化cookies

@@ -69,7 +69,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
 
-        handler.sendEmptyMessageDelayed(1,2500);
+        handler.sendEmptyMessageDelayed(1,1500);
 
     }
 }
