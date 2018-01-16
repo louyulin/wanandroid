@@ -11,14 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.ui.LoginActivity">
-        </activity>
+        <activity android:name=".view.ui.LoginActivity" />
         <activity android:name=".view.ui.RegisterActivity" />
         <activity android:name=".view.ui.MainActivity" />
         <activity android:name=".view.ui.SearchActivity" />
         <activity android:name=".view.ui.ArticalDetialActivity" />
         <activity android:name=".view.ui.ArticalListActivity" />
-        <activity android:name=".view.ui.SplashActivity"
+        <activity
+            android:name=".view.ui.SplashActivity"
             android:theme="@style/AppTheme.Full">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.ui.SearchListActivity" />
+        <activity android:name=".view.ui.CollectListActivity"></activity>
     </application>
 
 </manifest>

@@ -7,10 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.lyl.wandroid.R;
-import com.example.lyl.wandroid.modle.bean.AtricalListBean;
 import com.example.lyl.wandroid.modle.bean.CollectListBean;
 import com.example.lyl.wandroid.util.BaseContent;
 import com.example.lyl.wandroid.view.ui.ArticalDetialActivity;
@@ -19,18 +17,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by dllo on 18/1/13.
+ * Created by dllo on 18/1/16.
  */
 
-public class ArticalListAdapter extends BaseAdapter {
-    private List<AtricalListBean.DataBean.DatasBean> datas = new ArrayList<>();
+public class CollectListAdapter extends BaseAdapter {
+    private List<CollectListBean.DataBean.DatasBean> datas = new ArrayList<>();
 
-
-    public void setDatas(List<AtricalListBean.DataBean.DatasBean> datas) {
+    public void setDatas(List<CollectListBean.DataBean.DatasBean> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }
-
 
     @Override
     public int getCount() {
@@ -70,8 +66,8 @@ public class ArticalListAdapter extends BaseAdapter {
                 Intent intent = new Intent(parent.getContext(), ArticalDetialActivity.class);
                 intent.putExtra(BaseContent.ARTICALTITLE, datas.get(position).getTitle());
                 intent.putExtra(BaseContent.ARTICALLINK, datas.get(position).getLink());
-                intent.putExtra(BaseContent.ISCOLLECT, datas.get(position).isCollect());
-                intent.putExtra(BaseContent.ARTICALID, datas.get(position).getId());
+                intent.putExtra(BaseContent.ISCOLLECT, true);
+                intent.putExtra(BaseContent.ARTICALID, datas.get(position).getOriginId());
                 intent.putExtra(BaseContent.POSITION,position);
                 parent.getContext().startActivity(intent);
             }

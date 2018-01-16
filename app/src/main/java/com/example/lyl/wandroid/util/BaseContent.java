@@ -15,4 +15,5 @@ public class BaseContent {
     public static String BEANFLAG = "FLAG";
     public static String SEARCHTITLE = "SEARCHTITLE";
     public static String COLLECTName = "COLLECname";
+    public static String POSITION = "POSITION";
 }

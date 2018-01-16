@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lyl.wandroid.R;
 import com.example.lyl.wandroid.modle.bean.HomeArticalBean;
@@ -67,6 +68,7 @@ public class HomeListAdapter extends BaseAdapter {
                 intent.putExtra(BaseContent.ARTICALLINK,list.get(position).getLink());
                 intent.putExtra(BaseContent.ISCOLLECT,list.get(position).isCollect());
                 intent.putExtra(BaseContent.ARTICALID,list.get(position).getId());
+                intent.putExtra(BaseContent.POSITION,position);
                 parent.getContext().startActivity(intent);
             }
         });

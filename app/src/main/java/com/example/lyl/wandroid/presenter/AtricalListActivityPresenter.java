@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.example.lyl.wandroid.modle.NetTool;
 import com.example.lyl.wandroid.modle.bean.AtricalListBean;
+import com.example.lyl.wandroid.modle.bean.CollectListBean;
 import com.example.lyl.wandroid.util.BaseContent;
 import com.example.lyl.wandroid.view.iview.IAtricalListActivity;
 import com.example.lyl.wandroid.view.ui.ArticalListActivity;
@@ -21,14 +22,14 @@ import io.reactivex.schedulers.Schedulers;
 public class AtricalListActivityPresenter {
     private IAtricalListActivity view;
 
-    public AtricalListActivityPresenter(IAtricalListActivity view) {
+    public void setView(IAtricalListActivity view) {
         this.view = view;
     }
 
-    public void getArticalList (int id) {
+    public void getArticalList (int page , int id) {
         NetTool.getInstance()
                 .getApi()
-                .getAtricalList(id)
+                .getAtricalList(page,id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<AtricalListBean>() {
@@ -40,42 +41,48 @@ public class AtricalListActivityPresenter {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         view.fail();
+                        throwable.printStackTrace();
+
                     }
                 });
     }
 
-    public void getCollectList () {
+
+    public void getCollectList (int page) {
         NetTool.getInstance()
-                .getApi().getCollectData(0)
+                .getApi().getCollectData(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<AtricalListBean>() {
+                .subscribe(new Consumer<CollectListBean>() {
                     @Override
-                    public void accept(AtricalListBean bean) throws Exception {
+                    public void accept(CollectListBean bean) throws Exception {
                         view.collectresponse(bean);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         view.fail();
+                        throwable.printStackTrace();
+
                     }
                 });
     }
 
-    public void search(String k) {
+    public void search(int page , String k) {
         NetTool.getInstance().getApi()
-                .search(k)
+                .search(page,k)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<AtricalListBean>() {
                     @Override
                     public void accept(AtricalListBean bean) throws Exception {
-                        view.searchresponse(bean);
+                        view.response(bean);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         view.fail();
+                        throwable.printStackTrace();
                     }
                 });
     }

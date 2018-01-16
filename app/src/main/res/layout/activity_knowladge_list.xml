@@ -8,8 +8,13 @@
     android:orientation="vertical"
     tools:context="com.example.lyl.wandroid.view.ui.ArticalListActivity">
     <include layout="@layout/barlayout"/>
-    <ListView
-        android:id="@+id/lv"
+    <com.example.lyl.wandroid.view.customview.RefreshLayout
+        android:id="@+id/swipRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </com.example.lyl.wandroid.view.customview.RefreshLayout>
 </LinearLayout>

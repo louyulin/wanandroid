@@ -1,5 +1,6 @@
 package com.example.lyl.wandroid.view.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +38,7 @@ public class SearchActivity extends AppCompatActivity implements ISearchActivity
     private List<HotKeyBean.DataBean> datas;
     private String hotkeyname;
     private boolean hotkeyisclick = false;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,9 @@ public class SearchActivity extends AppCompatActivity implements ISearchActivity
     }
 
     private void initView() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("正在请求");
+
         presenter = new SearchActivityPresenter(this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -74,6 +79,7 @@ public class SearchActivity extends AppCompatActivity implements ISearchActivity
             }
         });
 
+
         presenter.hotKey();
 
         tagFlowLayout = (TagFlowLayout) findViewById(R.id.tagflowlayout);
@@ -83,11 +89,11 @@ public class SearchActivity extends AppCompatActivity implements ISearchActivity
 
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
+                progressDialog.show();
                 if (datas != null){
                     hotkeyisclick = true;
                     hotkeyname = datas.get(position).getName();
                     presenter.search(hotkeyname);
-                    Toast.makeText(SearchActivity.this, "" + hotkeyname, Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
@@ -110,11 +116,12 @@ public class SearchActivity extends AppCompatActivity implements ISearchActivity
     @Override
     public void respones(AtricalListBean bean) {
         Intent intent = new Intent();
-        intent.setClass(SearchActivity.this,ArticalListActivity.class);
+        intent.setClass(SearchActivity.this,SearchListActivity.class);
         intent.putExtra(BaseContent.BEANFLAG,bean);
         if (hotkeyisclick == true){
+            progressDialog.dismiss();
             hotkeyisclick = false;
-            intent.putExtra(BaseContent.SEARCHTITLE,hotkeyisclick);
+            intent.putExtra(BaseContent.SEARCHTITLE,hotkeyname);
         }else {
             intent.putExtra(BaseContent.SEARCHTITLE,search_et.getText().toString());
         }

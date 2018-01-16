@@ -27,13 +27,12 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticalListActivity extends AppCompatActivity implements IAtricalListActivity, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
+public class SearchListActivity extends AppCompatActivity implements IAtricalListActivity, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
     private Toolbar toolbar;
     private ListView lv;
     private ArticalListAdapter adapter;
     private AtricalListActivityPresenter presenter;
-    private int id;
-    private String title;
+    private String searchtitle;
     private ProgressDialog progressDialog;
     private Intent intent;
     private RefreshLayout refreshLayout;
@@ -42,12 +41,10 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
     private int page = 0;
     private List<AtricalListBean.DataBean.DatasBean> articalListData;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_knowladge_list);
-
         EventBus.getDefault().register(this);
 
         initData();
@@ -62,8 +59,10 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
         articalListData = new ArrayList<>();
 
         intent = getIntent();
-        id = intent.getIntExtra(BaseContent.ARTICALID, -1);
-        title = intent.getStringExtra(BaseContent.ARTICALTITLE);
+
+        searchtitle = intent.getStringExtra(BaseContent.SEARCHTITLE);
+        AtricalListBean bean = (AtricalListBean) intent.getSerializableExtra(BaseContent.BEANFLAG);
+        articalListData = bean.getData().getDatas();
     }
 
     private void initView() {
@@ -72,7 +71,7 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        toolbar.setTitle(title);
+        toolbar.setTitle(searchtitle);
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -95,7 +94,7 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
 
         progressDialog.show();
 
-        presenter.getArticalList(page, id);
+        presenter.search(page, searchtitle);
 
 
     }
@@ -171,10 +170,9 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
     public void onEventMainThread(Event event) {
 
         if (event.getMsg().equals(BaseContent.REFRESHHOMEFRAGMENT)) {
-            AtricalListBean.DataBean.DatasBean bean = articalListData.get(event.getPosition());
-            bean.setCollect(event.iscollect());
-            articalListData.set(event.getPosition(),bean);
-            adapter.setDatas(articalListData);
+            isRefreshing = true;
+            articalListData.clear();
+            presenter.search(0,searchtitle);
         }
     }
 
@@ -183,13 +181,13 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
         page = 0;
         isRefreshing = true;
         articalListData.clear();
-        presenter.getArticalList(0,id);
+        presenter.search(0,searchtitle);
     }
 
     @Override
     public void onLoad() {
         isLoading = true;
         ++page;
-        presenter.getArticalList(page,id);
+        presenter.search(page,searchtitle);
     }
 }

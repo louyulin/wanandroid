@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.lyl.wandroid.R;
 import com.example.lyl.wandroid.adapter.ArticalListAdapter;
+import com.example.lyl.wandroid.adapter.CollectListAdapter;
 import com.example.lyl.wandroid.modle.bean.AtricalListBean;
 import com.example.lyl.wandroid.modle.bean.CollectListBean;
 import com.example.lyl.wandroid.presenter.AtricalListActivityPresenter;
@@ -27,21 +28,23 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticalListActivity extends AppCompatActivity implements IAtricalListActivity, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
+public class CollectListActivity extends AppCompatActivity implements IAtricalListActivity, SwipeRefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
+
+    //// TODO: 18/1/15 适配器重写
+
     private Toolbar toolbar;
     private ListView lv;
-    private ArticalListAdapter adapter;
+
     private AtricalListActivityPresenter presenter;
-    private int id;
-    private String title;
+    private String searchtitle;
     private ProgressDialog progressDialog;
     private Intent intent;
     private RefreshLayout refreshLayout;
     private boolean isRefreshing = false;
     private boolean isLoading = false;
     private int page = 0;
-    private List<AtricalListBean.DataBean.DatasBean> articalListData;
-
+    private List<CollectListBean.DataBean.DatasBean> articalListData;
+    private CollectListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,6 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
 
         initView();
     }
-
     private void initData() {
         presenter = new AtricalListActivityPresenter();
         presenter.setView(this);
@@ -62,8 +64,10 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
         articalListData = new ArrayList<>();
 
         intent = getIntent();
-        id = intent.getIntExtra(BaseContent.ARTICALID, -1);
-        title = intent.getStringExtra(BaseContent.ARTICALTITLE);
+
+        searchtitle = intent.getStringExtra(BaseContent.COLLECTName);
+        CollectListBean bean = (CollectListBean) intent.getSerializableExtra(BaseContent.BEANFLAG);
+        articalListData = bean.getData().getDatas();
     }
 
     private void initView() {
@@ -72,7 +76,7 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        toolbar.setTitle(title);
+        toolbar.setTitle(searchtitle);
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -83,9 +87,15 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
         }
 
         lv = (ListView) findViewById(R.id.lv);
-        adapter = new ArticalListAdapter();
+
+        adapter = new CollectListAdapter();
+
+        adapter.setDatas(articalListData);
 
         lv.setAdapter(adapter);
+
+
+
 
         refreshLayout = (RefreshLayout) findViewById(R.id.swipRefreshLayout);
         refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent, R.color.colorAccent, R.color.colorPrimaryDark);
@@ -95,7 +105,7 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
 
         progressDialog.show();
 
-        presenter.getArticalList(page, id);
+        presenter.getCollectList(page);
 
 
     }
@@ -120,6 +130,10 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
     @Override
     public void response(AtricalListBean bean) {
 
+    }
+
+    @Override
+    public void collectresponse(CollectListBean bean) {
         if (isRefreshing) {
             refreshLayout.setRefreshing(false);
             isRefreshing = false;
@@ -139,12 +153,6 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
         } else {
             Toast.makeText(this, "" + bean.getErrorMsg(), Toast.LENGTH_SHORT).show();
         }
-
-    }
-
-    @Override
-    public void collectresponse(CollectListBean bean) {
-
     }
 
     @Override
@@ -171,9 +179,7 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
     public void onEventMainThread(Event event) {
 
         if (event.getMsg().equals(BaseContent.REFRESHHOMEFRAGMENT)) {
-            AtricalListBean.DataBean.DatasBean bean = articalListData.get(event.getPosition());
-            bean.setCollect(event.iscollect());
-            articalListData.set(event.getPosition(),bean);
+            articalListData.remove(event.getPosition());
             adapter.setDatas(articalListData);
         }
     }
@@ -183,13 +189,13 @@ public class ArticalListActivity extends AppCompatActivity implements IAtricalLi
         page = 0;
         isRefreshing = true;
         articalListData.clear();
-        presenter.getArticalList(0,id);
+        presenter.getCollectList(0);
     }
 
     @Override
     public void onLoad() {
         isLoading = true;
         ++page;
-        presenter.getArticalList(page,id);
+        presenter.getCollectList(page);
     }
 }

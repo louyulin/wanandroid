@@ -22,7 +22,7 @@ public class SearchActivityPresenter {
 
     public void search(String k) {
         NetTool.getInstance().getApi()
-                .search(k)
+                .search(0,k)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<AtricalListBean>() {

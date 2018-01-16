@@ -123,6 +123,11 @@ public class HomeFragment extends Fragment implements IHomeFragment, SwipeRefres
 
     @Override
     public void fail() {
+
+        if (page >= 1) {
+            page--;
+        }
+
         if (isRefreshing){
             refreshLayout.setRefreshing(false);
             isRefreshing = false;
@@ -137,6 +142,7 @@ public class HomeFragment extends Fragment implements IHomeFragment, SwipeRefres
 
     @Override
     public void onRefresh() {
+        page = 0;
         isRefreshing = true;
         datas.clear();
         presenter.requestHomeList(0);
@@ -153,9 +159,10 @@ public class HomeFragment extends Fragment implements IHomeFragment, SwipeRefres
     @Subscribe
     public void onEventMainThread(Event event) {
         if (event.getMsg().equals(BaseContent.REFRESHHOMEFRAGMENT)){
-            isRefreshing = true;
-            datas.clear();
-            presenter.requestHomeList(0);
+            HomeArticalBean.DataBean.DatasBean datasBean = datas.get(event.getPosition());
+            datasBean.setCollect(event.iscollect());
+            datas.set(event.getPosition(),datasBean);
+            adapter.setList(datas);
         }
     }
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,11 @@ import com.example.lyl.wandroid.R;
 import com.example.lyl.wandroid.modle.NetTool;
 import com.example.lyl.wandroid.modle.WanAndroidCookieJar;
 import com.example.lyl.wandroid.modle.bean.AtricalListBean;
+import com.example.lyl.wandroid.modle.bean.CollectListBean;
 import com.example.lyl.wandroid.util.BaseContent;
 import com.example.lyl.wandroid.util.ShareUtils;
 import com.example.lyl.wandroid.view.ui.ArticalListActivity;
+import com.example.lyl.wandroid.view.ui.CollectListActivity;
 import com.example.lyl.wandroid.view.ui.LoginActivity;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -71,10 +74,11 @@ public class MyFragment extends Fragment {
                         .getApi().getCollectData(0)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<AtricalListBean>() {
+                        .subscribe(new Consumer<CollectListBean>() {
                             @Override
-                            public void accept(AtricalListBean bean) throws Exception {
-                                Intent intent = new Intent(MyFragment.this.getActivity(), ArticalListActivity.class);
+                            public void accept(CollectListBean bean) throws Exception {
+                                Log.d("MyFragment", "bean.getData().getDatas():" + bean.getData().getDatas());
+                                Intent intent = new Intent(MyFragment.this.getActivity(), CollectListActivity.class);
                                 intent.putExtra(BaseContent.BEANFLAG,bean);
                                 intent.putExtra(BaseContent.COLLECTName,"我的收藏");
                                 MyFragment.this.getActivity().startActivity(intent);

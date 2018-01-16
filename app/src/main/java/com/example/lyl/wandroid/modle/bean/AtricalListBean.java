@@ -9,6 +9,15 @@ import java.util.List;
 
 public class AtricalListBean implements Serializable {
 
+    @Override
+    public String toString() {
+        return "AtricalListBean{" +
+                "errorCode=" + errorCode +
+                ", errorMsg=" + errorMsg +
+                ", data=" + data +
+                '}';
+    }
+
     /**
      * errorCode : 0
      * errorMsg : null
@@ -44,6 +53,20 @@ public class AtricalListBean implements Serializable {
     }
 
     public static class DataBean implements Serializable {
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "offset=" + offset +
+                    ", size=" + size +
+                    ", total=" + total +
+                    ", pageCount=" + pageCount +
+                    ", curPage=" + curPage +
+                    ", over=" + over +
+                    ", datas=" + datas +
+                    '}';
+        }
+
         /**
          * datas : [{"id":1578,"title":"这些 Drawable 的小技巧，你都了解吗？","chapterId":168,"chapterName":"Drawable","envelopePic":null,"link":"https://juejin.im/post/5a28b2d0f265da431c703153","author":" 承香墨影","origin":null,"publishTime":1512660849000,"zan":null,"desc":null,"visible":1,"niceDate":"2017-12-07","courseId":13,"collect":false},{"id":1544,"title":"Android drawable微技巧，你所不知道的drawable的那些细节","chapterId":168,"chapterName":"Drawable","envelopePic":null,"link":"http://blog.csdn.net/guolin_blog/article/details/50727753","author":"郭霖","origin":null,"publishTime":1511934940000,"zan":null,"desc":null,"visible":1,"niceDate":"2017-11-29","courseId":13,"collect":false},{"id":1476,"title":"美工死不瞑目系列之SVG推锅技巧！","chapterId":168,"chapterName":"Drawable","envelopePic":null,"link":"http://www.jianshu.com/p/ad9b7382aecb","author":"吴愣","origin":null,"publishTime":1509450326000,"zan":0,"desc":null,"visible":1,"niceDate":"2017-10-31","courseId":13,"collect":false},{"id":1289,"title":"Android资源详解","chapterId":168,"chapterName":"Drawable","envelopePic":null,"link":"http://www.jianshu.com/p/8d14d2c25138","author":"发烧的冬瓜","origin":null,"publishTime":1506957747000,"zan":0,"desc":null,"visible":1,"niceDate":"2017-10-02","courseId":13,"collect":false},{"id":1184,"title":"Android中的13种Drawable小结 Part 2","chapterId":168,"chapterName":"Drawable","envelopePic":null,"link":"http://blog.csdn.net/coder_pig/article/details/49008397","author":"coder-pig","origin":null,"publishTime":1506652976000,"zan":0,"desc":null,"visible":1,"niceDate":"2017-09-29","courseId":13,"collect":false},{"id":1183,"title":"Android中的13种Drawable小结 Part 1","chapterId":168,"chapterName":"Drawable","envelopePic":null,"link":"http://blog.csdn.net/coder_pig/article/details/49006217","author":"coder-pig","origin":null,"publishTime":1506652873000,"zan":0,"desc":null,"visible":1,"niceDate":"2017-09-29","courseId":13,"collect":false},{"id":1182,"title":"Android Drawable 那些不为人知的高效用法","chapterId":168,"chapterName":"Drawable","envelopePic":null,"link":"http://blog.csdn.net/lmj623565791/article/details/43752383","author":"鸿洋","origin":null,"publishTime":1506652498000,"zan":0,"desc":null,"visible":1,"niceDate":"2017-09-29","courseId":13,"collect":false},{"id":983,"title":"Android样式的开发:shape篇","chapterId":168,"chapterName":"Drawable","envelopePic":"","link":"http://keeganlee.me/post/android/20150830","author":"Keegan小钢","origin":"http://keeganlee.me/","publishTime":1472901417000,"zan":0,"desc":"一个应用，应该保持一套统一的样式，包括Button、EditText、ProgressBar、Toast、Checkbox等各种控件的样式，还包括控件间隔、文字大小和颜色、阴影等等。web的样式用css来定义，而android的样式主要则是通过shape、selector、layer-list、level-list、style、theme等组合实现。我将用一系列文章，循序渐进地讲解样式的每个方面该如何实现。第一个要讲的就是shape，最基础的形状定义工具。","visible":1,"niceDate":"2016-09-03","courseId":13,"collect":false},{"id":739,"title":"用RotateDrawable实现网易云音乐唱片机效果","chapterId":168,"chapterName":"Drawable","envelopePic":null,"link":"http://www.jianshu.com/p/0e0de2cdd2bb","author":"码农小阿飞","origin":"简书","publishTime":1466484108000,"zan":0,"desc":null,"visible":1,"niceDate":"2016-06-21","courseId":13,"collect":false}]
          * offset : 0
@@ -119,6 +142,28 @@ public class AtricalListBean implements Serializable {
         }
 
         public static class DatasBean implements Serializable {
+
+            @Override
+            public String toString() {
+                return "DatasBean{" +
+                        "id=" + id +
+                        ", title='" + title + '\'' +
+                        ", chapterId=" + chapterId +
+                        ", chapterName='" + chapterName + '\'' +
+                        ", envelopePic=" + envelopePic +
+                        ", link='" + link + '\'' +
+                        ", author='" + author + '\'' +
+                        ", origin=" + origin +
+                        ", publishTime=" + publishTime +
+                        ", zan=" + zan +
+                        ", desc=" + desc +
+                        ", visible=" + visible +
+                        ", niceDate='" + niceDate + '\'' +
+                        ", courseId=" + courseId +
+                        ", collect=" + collect +
+                        '}';
+            }
+
             /**
              * id : 1578
              * title : 这些 Drawable 的小技巧，你都了解吗？

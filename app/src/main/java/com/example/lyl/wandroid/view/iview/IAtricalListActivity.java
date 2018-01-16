@@ -1,6 +1,7 @@
 package com.example.lyl.wandroid.view.iview;
 
 import com.example.lyl.wandroid.modle.bean.AtricalListBean;
+import com.example.lyl.wandroid.modle.bean.CollectListBean;
 import com.example.lyl.wandroid.modle.bean.CollectResultBean;
 
 /**
@@ -9,7 +10,6 @@ import com.example.lyl.wandroid.modle.bean.CollectResultBean;
 
 public interface IAtricalListActivity {
     void response(AtricalListBean bean);
+    void collectresponse(CollectListBean bean);
     void fail();
-    void collectresponse(AtricalListBean bean);
-    void searchresponse(AtricalListBean bean);
 }

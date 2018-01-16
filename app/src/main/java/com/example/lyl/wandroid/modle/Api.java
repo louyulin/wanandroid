@@ -1,6 +1,7 @@
 package com.example.lyl.wandroid.modle;
 
 import com.example.lyl.wandroid.modle.bean.AtricalListBean;
+import com.example.lyl.wandroid.modle.bean.CollectListBean;
 import com.example.lyl.wandroid.modle.bean.CollectResultBean;
 import com.example.lyl.wandroid.modle.bean.HomeArticalBean;
 import com.example.lyl.wandroid.modle.bean.HotKeyBean;
@@ -47,15 +48,15 @@ public interface  Api {
     @POST("lg/uncollect_originId/{id}/json")
     Observable<CollectResultBean> unCollectArtical(@Path("id") int id);
 
-    @GET("article/list/0/json")
-    Observable<AtricalListBean> getAtricalList(@Query("cid")  int id);
+    @GET("article/list/{page}/json")
+    Observable<AtricalListBean> getAtricalList(@Path("page") int page ,  @Query("cid")  int id);
 
-    @POST("article/query/0/json")
-    Observable<AtricalListBean> search(@Query("k") String k);
+    @POST("article/query/{page}/json")
+    Observable<AtricalListBean> search(@Path("page") int page , @Query("k") String k);
 
     //收藏列表
     @GET("lg/collect/list/{page}/json")
-    Observable<AtricalListBean> getCollectData(@Path("page") int page);
+    Observable<CollectListBean> getCollectData(@Path("page") int page);
 
     @GET("hotkey/json")
     Observable<HotKeyBean> getHotKey();

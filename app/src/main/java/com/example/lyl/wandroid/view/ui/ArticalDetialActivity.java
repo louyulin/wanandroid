@@ -25,6 +25,7 @@ import com.example.lyl.wandroid.util.BaseContent;
 import com.example.lyl.wandroid.util.Event;
 import com.example.lyl.wandroid.util.SharesUtils;
 import com.example.lyl.wandroid.view.iview.IArticalDetialActivity;
+
 import org.greenrobot.eventbus.EventBus;
 
 public class ArticalDetialActivity extends AppCompatActivity implements IArticalDetialActivity {
@@ -37,6 +38,7 @@ public class ArticalDetialActivity extends AppCompatActivity implements IArtical
     private int articalId;
     private MenuItem collect;
     private ArticalDetialActivityPresenter presenter;
+    private int position;
 
 
     @Override
@@ -54,8 +56,12 @@ public class ArticalDetialActivity extends AppCompatActivity implements IArtical
         presenter = new ArticalDetialActivityPresenter(this);
         Intent intent = getIntent();
         link = intent.getStringExtra(BaseContent.ARTICALLINK);
-        iscollect = intent.getBooleanExtra(BaseContent.ISCOLLECT, false);
+
+        iscollect = intent.getBooleanExtra(BaseContent.ISCOLLECT, true);
+
         articalId = intent.getIntExtra(BaseContent.ARTICALID, -1);
+
+        position = intent.getIntExtra(BaseContent.POSITION,-1);
 
     }
 
@@ -117,9 +123,9 @@ public class ArticalDetialActivity extends AppCompatActivity implements IArtical
                 if (articalId == -1) {
                     Toast.makeText(this, "收藏失败", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (!iscollect){
+                    if (!iscollect) {
                         presenter.collect(articalId);
-                    }else {
+                    } else {
                         presenter.uncollect(articalId);
                     }
                 }
@@ -144,18 +150,18 @@ public class ArticalDetialActivity extends AppCompatActivity implements IArtical
         supportInvalidateOptionsMenu();
     }
 
-        @Override
+    @Override
     public void response(boolean collect) {
-            if (collect == true){
-                //如果之前没有收藏
-                    iscollect = true;
-                    increase();
-                Toast.makeText(this, "收藏成功", Toast.LENGTH_SHORT).show();
-            }else {
-                iscollect = false;
-                increase();
-                Toast.makeText(this, "解除收藏", Toast.LENGTH_SHORT).show();
-            }
+        if (collect == true) {
+            //如果之前没有收藏
+            iscollect = true;
+            increase();
+            Toast.makeText(this, "收藏成功", Toast.LENGTH_SHORT).show();
+        } else {
+            iscollect = false;
+            increase();
+            Toast.makeText(this, "解除收藏", Toast.LENGTH_SHORT).show();
+        }
 
 
     }
@@ -194,6 +200,16 @@ public class ArticalDetialActivity extends AppCompatActivity implements IArtical
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().post(new Event(BaseContent.REFRESHHOMEFRAGMENT));
+        if (iscollect){
+            //如果收藏了才进行局部刷新
+            if (position != -1){
+                EventBus.getDefault().post(new Event(BaseContent.REFRESHHOMEFRAGMENT,position,true));
+            }
+        }else {
+            //如果不收藏了进行局部刷新
+            if (position != -1){
+                EventBus.getDefault().post(new Event(BaseContent.REFRESHHOMEFRAGMENT,position,false));
+            }
+        }
     }
 }
