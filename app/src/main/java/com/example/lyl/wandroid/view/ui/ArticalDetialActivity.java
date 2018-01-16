@@ -57,7 +57,7 @@ public class ArticalDetialActivity extends AppCompatActivity implements IArtical
         Intent intent = getIntent();
         link = intent.getStringExtra(BaseContent.ARTICALLINK);
 
-        iscollect = intent.getBooleanExtra(BaseContent.ISCOLLECT, true);
+        iscollect = intent.getBooleanExtra(BaseContent.ISCOLLECT, false);
 
         articalId = intent.getIntExtra(BaseContent.ARTICALID, -1);
 
@@ -121,7 +121,7 @@ public class ArticalDetialActivity extends AppCompatActivity implements IArtical
                 break;
             case R.id.collect:
                 if (articalId == -1) {
-                    Toast.makeText(this, "收藏失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "收藏失败,该文章非站内文章", Toast.LENGTH_SHORT).show();
                 } else {
                     if (!iscollect) {
                         presenter.collect(articalId);
