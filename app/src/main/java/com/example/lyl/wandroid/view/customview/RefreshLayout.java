@@ -12,7 +12,9 @@ import android.view.ViewConfiguration;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
+
 import com.example.lyl.wandroid.R;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -22,223 +24,266 @@ import java.lang.reflect.Method;
 public class RefreshLayout extends SwipeRefreshLayout implements
         OnScrollListener {
 
-	/**
-	 * 滑动到最下面时的上拉操作
-	 */
+    /**
+     * 滑动到最下面时的上拉操作
+     */
 
-	private int mTouchSlop;
-	/**
-	 * listview实例
-	 */
-	private ListView mListView;
+    private int mTouchSlop;
+    /**
+     * listview实例
+     */
+    private ListView mListView;
 
-	/**
-	 * 上拉监听器, 到了最底部的上拉加载操作
-	 */
-	private OnLoadListener mOnLoadListener;
+    /**
+     * 上拉监听器, 到了最底部的上拉加载操作
+     */
+    private OnLoadListener mOnLoadListener;
 
-	/**
-	 * ListView的加载中footer
-	 */
-	private View mListViewFooter;
+    /**
+     * ListView的加载中footer
+     */
+    private View mListViewFooter;
 
-	/**
-	 * 按下时的y坐标
-	 */
-	private int mYDown;
-	/**
-	 * 抬起时的y坐标, 与mYDown一起用于滑动到底部时判断是上拉还是下拉
-	 */
-	private int mLastY;
-	/**
-	 * 是否在加载中 ( 上拉加载更多 )
-	 */
-	private boolean isLoading = false;
+    /**
+     * 按下时的y坐标
+     */
+    private int mYDown;
+    /**
+     * 抬起时的y坐标, 与mYDown一起用于滑动到底部时判断是上拉还是下拉
+     */
+    private int mLastY;
+    /**
+     * 是否在加载中 ( 上拉加载更多 )
+     */
+    private boolean isLoading = false;
 
-	/**
-	 * @param context
-	 */
-	public RefreshLayout(Context context) {
-		this(context, null);
-	}
+    // 是否存在左右滑动事件
+    private boolean mDragger;
+    // 记录手指按下的位置
+    private float mStartY, mStartX;
 
-	@SuppressLint("InflateParams")
-	public RefreshLayout(Context context, AttributeSet attrs) {
-		super(context, attrs);
+    /**
+     * @param context
+     */
+    public RefreshLayout(Context context) {
+        this(context, null);
+    }
 
-		mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+    @SuppressLint("InflateParams")
+    public RefreshLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
 
-		mListViewFooter = LayoutInflater.from(context).inflate(
-				R.layout.listview_footer, null, false);
-	}
+        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
-	@Override
-	protected void onLayout(boolean changed, int left, int top, int right,
-			int bottom) {
-		super.onLayout(changed, left, top, right, bottom);
-		// 初始化ListView对象
-		if (mListView == null) {
-			getListView();
-		}
-	}
+        mListViewFooter = LayoutInflater.from(context).inflate(
+                R.layout.listview_footer, null, false);
+    }
 
-	/**
-	 * 获取ListView对象
-	 */
-	private void getListView() {
-		int childs = getChildCount();
-		if (childs > 0) {
-			View childView = getChildAt(0);
-			if (childView instanceof ListView) {
-				mListView = (ListView) childView;
-				// 设置滚动监听器给ListView, 使得滚动的情况下也可以自动加载
-				mListView.setOnScrollListener(this);
-				Log.d(VIEW_LOG_TAG, "### 找到listview");
-			}
-		}
-	}
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right,
+                            int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        // 初始化ListView对象
+        if (mListView == null) {
+            getListView();
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.view.ViewGroup#dispatchTouchEvent(android.view.MotionEvent)
-	 */
-	@Override
-	public boolean dispatchTouchEvent(MotionEvent event) {
-		final int action = event.getAction();
+    /**
+     * 获取ListView对象
+     */
+    private void getListView() {
+        int childs = getChildCount();
+        if (childs > 0) {
+            View childView = getChildAt(0);
+            if (childView instanceof ListView) {
+                mListView = (ListView) childView;
+                // 设置滚动监听器给ListView, 使得滚动的情况下也可以自动加载
+                mListView.setOnScrollListener(this);
+                Log.d(VIEW_LOG_TAG, "### 找到listview");
+            }
+        }
+    }
 
-		switch (action) {
-		case MotionEvent.ACTION_DOWN:
-			// 按下
-			mYDown = (int) event.getRawY();
-			break;
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.view.ViewGroup#dispatchTouchEvent(android.view.MotionEvent)
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        final int action = event.getAction();
 
-		case MotionEvent.ACTION_MOVE:
-			// 移动
-			mLastY = (int) event.getRawY();
-			break;
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                // 按下
+                mYDown = (int) event.getRawY();
+                break;
 
-		case MotionEvent.ACTION_UP:
-			// 抬起
-			if (canLoad()) {
-				loadData();
-			}
-			break;
-		default:
-			break;
-		}
+            case MotionEvent.ACTION_MOVE:
+                // 移动
+                mLastY = (int) event.getRawY();
+                break;
 
-		return super.dispatchTouchEvent(event);
-	}
+            case MotionEvent.ACTION_UP:
+                // 抬起
+                if (canLoad()) {
+                    loadData();
+                }
+                break;
+            default:
+                break;
+        }
 
-	/**
-	 * 是否可以加载更多, 条件是到了最底部, listview不在加载中, 且为上拉操作.
-	 * 
-	 * @return
-	 */
-	private boolean canLoad() {
-		return isBottom() && !isLoading && isPullUp();
-	}
+        return super.dispatchTouchEvent(event);
+    }
 
-	/**
-	 * 判断是否到了最底部
-	 */
-	private boolean isBottom() {
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        int action = ev.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                // 记录手指按下的位置
+                mStartY = ev.getY();
+                mStartX = ev.getX();
+                //初始化左右滑动事件为false
+                mDragger = false;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                //如果左右滑动事件为true  直接返回false 不拦截事件
+                if (mDragger) {
+                    return false;
+                }
 
-		if (mListView != null && mListView.getAdapter() != null) {
-			return mListView.getLastVisiblePosition() == (mListView
-					.getAdapter().getCount() - 1);
-		}
-		return false;
-	}
+                // 获取当前手指位置
+                float endY = ev.getY();
+                float endX = ev.getX();
+                //获取X,Y滑动距离的绝对值
+                float distanceX = Math.abs(endX - mStartX);
+                float distanceY = Math.abs(endY - mStartY);
 
-	/**
-	 * 是否是上拉操作
-	 * 
-	 * @return
-	 */
-	private boolean isPullUp() {
-		return (mYDown - mLastY) >= mTouchSlop;
-	}
+                // 如果X轴位移大于Y轴距离，那么将事件交给其他控件
+                if (distanceX > mTouchSlop && distanceX > distanceY) {
+                    mDragger = true;
+                    return false;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                //初始化左右滑动事件为false
+                mDragger = false;
+                break;
+        }
+        return super.onInterceptTouchEvent(ev);
+    }
 
-	/**
-	 * 如果到了最底部,而且是上拉操作.那么执行onLoad方法
-	 */
-	private void loadData() {
-		if (mOnLoadListener != null) {
-			// 设置状态
-			setLoading(true);
-			//
-			mOnLoadListener.onLoad();
-		}
-	}
+    /**
+     * 是否可以加载更多, 条件是到了最底部, listview不在加载中, 且为上拉操作.
+     *
+     * @return
+     */
+    private boolean canLoad() {
+        return isBottom() && !isLoading && isPullUp();
+    }
 
-	/**
-	 * @param loading
-	 */
-	public void setLoading(boolean loading) {
-		isLoading = loading;
-		if (isLoading) {
-			mListView.addFooterView(mListViewFooter);
-		} else {
-			mListView.removeFooterView(mListViewFooter);
-			mYDown = 0;
-			mLastY = 0;
-		}
-	}
+    /**
+     * 判断是否到了最底部
+     */
+    private boolean isBottom() {
 
-	/**
-	 * @param loadListener
-	 */
-	public void setOnLoadListener(OnLoadListener loadListener) {
-		mOnLoadListener = loadListener;
-	}
+        if (mListView != null && mListView.getAdapter() != null) {
+            return mListView.getLastVisiblePosition() == (mListView
+                    .getAdapter().getCount() - 1);
+        }
+        return false;
+    }
 
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {
+    /**
+     * 是否是上拉操作
+     *
+     * @return
+     */
+    private boolean isPullUp() {
+        return (mYDown - mLastY) >= mTouchSlop;
+    }
 
-	}
+    /**
+     * 如果到了最底部,而且是上拉操作.那么执行onLoad方法
+     */
+    private void loadData() {
+        if (mOnLoadListener != null) {
+            // 设置状态
+            setLoading(true);
+            //
+            mOnLoadListener.onLoad();
+        }
+    }
 
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem,
+    /**
+     * @param loading
+     */
+    public void setLoading(boolean loading) {
+        isLoading = loading;
+        if (isLoading) {
+            mListView.addFooterView(mListViewFooter);
+        } else {
+            mListView.removeFooterView(mListViewFooter);
+            mYDown = 0;
+            mLastY = 0;
+        }
+    }
+
+    /**
+     * @param loadListener
+     */
+    public void setOnLoadListener(OnLoadListener loadListener) {
+        mOnLoadListener = loadListener;
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem,
                          int visibleItemCount, int totalItemCount) {
-		// 滚动时到了最底部也可以加载更多
-		if (canLoad()) {
-			loadData();
-		}
-	}
-	
-	/**
-	 * 设置刷新
-	 */
-	public static void setRefreshing(SwipeRefreshLayout refreshLayout,
-			boolean refreshing, boolean notify) {
-		Class<? extends SwipeRefreshLayout> refreshLayoutClass = refreshLayout
-				.getClass();
-		if (refreshLayoutClass != null) {
+        // 滚动时到了最底部也可以加载更多
+        if (canLoad()) {
+            loadData();
+        }
+    }
 
-			try {
-				Method setRefreshing = refreshLayoutClass.getDeclaredMethod(
-						"setRefreshing", boolean.class, boolean.class);
-				setRefreshing.setAccessible(true);
-				setRefreshing.invoke(refreshLayout, refreshing, notify);
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+    /**
+     * 设置刷新
+     */
+    public static void setRefreshing(SwipeRefreshLayout refreshLayout,
+                                     boolean refreshing, boolean notify) {
+        Class<? extends SwipeRefreshLayout> refreshLayoutClass = refreshLayout
+                .getClass();
+        if (refreshLayoutClass != null) {
+
+            try {
+                Method setRefreshing = refreshLayoutClass.getDeclaredMethod(
+                        "setRefreshing", boolean.class, boolean.class);
+                setRefreshing.setAccessible(true);
+                setRefreshing.invoke(refreshLayout, refreshing, notify);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
-
-	/**
-	 * 加载更多的监听器
-	 */
-	public static interface OnLoadListener {
-		public void onLoad();
-	}
+    /**
+     * 加载更多的监听器
+     */
+    public static interface OnLoadListener {
+        public void onLoad();
+    }
 
 }

@@ -84,8 +84,8 @@ public class KnowladgeLvAdapter extends BaseAdapter {
         RecyclerView rv;
 
         public Holder(View view) {
-            tv = view.findViewById(R.id.item_knowladgelv_tv);
-            rv = view.findViewById(R.id.item_knowladge_rv);
+            tv = (TextView) view.findViewById(R.id.item_knowladgelv_tv);
+            rv = (RecyclerView) view.findViewById(R.id.item_knowladge_rv);
         }
     }
 
@@ -138,7 +138,7 @@ public class KnowladgeLvAdapter extends BaseAdapter {
 
             public Holder(View itemView) {
                 super(itemView);
-                tv = itemView.findViewById(R.id.item_knowladge_rv_tv);
+                tv = (TextView) itemView.findViewById(R.id.item_knowladge_rv_tv);
             }
         }
     }

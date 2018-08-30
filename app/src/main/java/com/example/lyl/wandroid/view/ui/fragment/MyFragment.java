@@ -49,11 +49,11 @@ public class MyFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView username_tv = view.findViewById(R.id.username_tv);
+        TextView username_tv = (TextView) view.findViewById(R.id.username_tv);
         username_tv.setText(ShareUtils.getString(getActivity(),"username",null) == null ? "用户名" : ShareUtils.getString(getActivity(),"username",null));
 
 
-        TextView exitTv = view.findViewById(R.id.exit_tv);
+        TextView exitTv = (TextView) view.findViewById(R.id.exit_tv);
         exitTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +65,7 @@ public class MyFragment extends Fragment {
             }
         });
 
-        TextView collectTv = view.findViewById(R.id.collect_tv);
+        TextView collectTv = (TextView) view.findViewById(R.id.collect_tv);
 
         collectTv.setOnClickListener(new View.OnClickListener() {
             @Override

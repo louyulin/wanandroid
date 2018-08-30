@@ -68,13 +68,13 @@ public class HomeFragment extends Fragment implements IHomeFragment, SwipeRefres
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("正在请求");
 
-        listView = view.findViewById(R.id.lv);
+        listView = (ListView) view.findViewById(R.id.lv);
 
         //初始化头布局
         View lvHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.item_head_homelv,null );
         //初始化轮播图
-        LoopViewPager lvp = lvHeadView.findViewById(R.id.looperviewpager);
-        CircleIndicator indicator = lvHeadView.findViewById(R.id.indicator);
+        LoopViewPager lvp = (LoopViewPager) lvHeadView.findViewById(R.id.looperviewpager);
+        CircleIndicator indicator = (CircleIndicator) lvHeadView.findViewById(R.id.indicator);
         lvp.setAdapter(new HomePicAdapter(getActivity()));
         lvp.setLooperPic(true);//5s自动轮播
         indicator.setViewPager(lvp); //indicator需要知道viewpager
@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment implements IHomeFragment, SwipeRefres
         adapter = new HomeListAdapter();
         listView.setAdapter(adapter);
 
-        refreshLayout = view.findViewById(R.id.swipRefreshLayout);
+        refreshLayout = (RefreshLayout) view.findViewById(R.id.swipRefreshLayout);
         refreshLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent, R.color.colorAccent, R.color.colorPrimaryDark);
 
         refreshLayout.setOnRefreshListener(this);

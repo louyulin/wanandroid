@@ -50,7 +50,7 @@ public class KnowladgeFragment extends Fragment implements IKnowladgeFragment{
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("正在请求");
 
-        knowladge_lv = view.findViewById(R.id.knowladge_lv);
+        knowladge_lv = (ListView) view.findViewById(R.id.knowladge_lv);
         adapter = new KnowladgeLvAdapter();
         knowladge_lv.setAdapter(adapter);
 

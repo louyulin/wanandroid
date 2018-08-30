@@ -83,8 +83,8 @@ public class ArticalListAdapter extends BaseAdapter {
         TextView titletv, zuozhetv;
 
         public Holder(View view) {
-            titletv = view.findViewById(R.id.item_title_tv);
-            zuozhetv = view.findViewById(R.id.item_zuozhe_tv);
+            titletv = (TextView) view.findViewById(R.id.item_title_tv);
+            zuozhetv = (TextView) view.findViewById(R.id.item_zuozhe_tv);
         }
     }
 }
